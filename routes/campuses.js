@@ -1,5 +1,4 @@
 const express = require('express');
-const { FieldValue } = require('firebase-admin/firestore');
 
 module.exports = (db) => {
   const router = express.Router();
@@ -20,18 +19,30 @@ module.exports = (db) => {
         }
 
         // Validate required fields
-        if (typeof doc.name !== 'string' || typeof doc.description !== 'string' || !Array.isArray(doc.educationalLevels)) {
-          throw new Error('Each document must have name (string), description (string), and educationalLevels (array)');
+        if (
+          typeof doc.name !== 'string' ||
+          typeof doc.description !== 'string' ||
+          !Array.isArray(doc.homerooms) ||
+          typeof doc.zone !== 'string' ||
+          !['urban', 'rural'].includes(doc.zone)
+        ) {
+          throw new Error('Each document must have name (string), description (string), homerooms (array), and zone ("urban" or "rural")');
         }
 
-        // Convert educationalLevels string paths to DocumentReference objects
-        const educationalLevelRefs = doc.educationalLevels.map(path => db.doc(path));
+        // Validate homerooms references
+        if (!doc.homerooms.every(path => typeof path === 'string' && path.startsWith('/homerooms/'))) {
+          throw new Error('All homerooms must be string references starting with /homerooms/');
+        }
+
+        // Convert homerooms string paths to DocumentReference objects
+        const homeroomRefs = doc.homerooms.map(path => db.doc(path));
 
         const ref = db.collection('campuses').doc(doc.id);
         batch.set(ref, {
           name: doc.name,
           description: doc.description,
-          educationalLevels: educationalLevelRefs
+          zone: doc.zone,
+          homerooms: homeroomRefs
         }, { merge: true });
       });
 

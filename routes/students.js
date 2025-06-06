@@ -21,21 +21,24 @@ module.exports = (db) => {
         // Validate required fields
         if (
           typeof doc.name !== 'string' ||
-          typeof doc.cellphoneContact !== 'string' ||
-          typeof doc.homeroom !== 'string'
+          typeof doc.cellphoneContact !== 'string'
         ) {
-          throw new Error('Each document must have name (string), cellphoneContact (string), and homeroom (string reference path)');
+          throw new Error('Each document must have name (string) and cellphoneContact (string)');
         }
 
-        // Convert homeroom string path to DocumentReference
-        const homeroomRef = db.doc(doc.homeroom);
+        // Prepare data object to save/update
+        const dataToSave = {
+          name: doc.name,
+          cellphoneContact: doc.cellphoneContact
+        };
+
+        // Add status if provided and is a string
+        if (typeof doc.status === 'string') {
+          dataToSave.status = doc.status;
+        }
 
         const ref = db.collection('students').doc(doc.id);
-        batch.set(ref, {
-          name: doc.name,
-          cellphoneContact: doc.cellphoneContact,
-          homeroom: homeroomRef
-        }, { merge: true });
+        batch.set(ref, dataToSave, { merge: true });
       });
 
       await batch.commit();

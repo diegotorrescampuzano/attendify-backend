@@ -21,25 +21,15 @@ module.exports = (db) => {
         // Validate required fields
         if (
           typeof doc.name !== 'string' ||
-          typeof doc.description !== 'string' ||
-          typeof doc.campusId !== 'string' ||
-          !Array.isArray(doc.grades)
+          typeof doc.description !== 'string'
         ) {
-          throw new Error('Each document must have name (string), description (string), campusId (string), and grades (array)');
+          throw new Error('Each document must have name (string) and description (string)');
         }
-
-        // Convert campusId string path to DocumentReference
-        const campusRef = db.doc(doc.campusId);
-
-        // Convert grades array of string paths to DocumentReference array
-        const gradesRefs = doc.grades.map(path => db.doc(path));
 
         const ref = db.collection('educationalLevels').doc(doc.id);
         batch.set(ref, {
           name: doc.name,
-          description: doc.description,
-          campusId: campusRef,
-          grades: gradesRefs
+          description: doc.description
         }, { merge: true });
       });
 

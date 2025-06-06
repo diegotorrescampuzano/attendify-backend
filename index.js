@@ -51,6 +51,14 @@ app.use('/api/subjects', subjectsRouter);
 const homeroomsRouter = require('./routes/homerooms')(db);
 app.use('/api/homerooms', homeroomsRouter);
 
+// Add or update multiple teacher documents
+const teachersRouter = require('./routes/teachers')(db);
+app.use('/api/teachers', teachersRouter);
+
+// Add or update multiple teacher lecture documents
+const teacherLecturesRouter = require('./routes/teacherLectures')(db);
+app.use('/api/teacher-lectures', teacherLecturesRouter);
+
 // Port configuration
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
