@@ -1,0 +1,210 @@
+{
+  "users": {
+    "documentId": "WiI7uR0vMwMQwOxOThXNODWmhFx2",
+    "fields": {
+      "email": { "type": "string", "example": "marianita@gmail.com" },
+      "name": { "type": "string", "example": "Mariana Torres" },
+      "refId": { "type": "string", "example": "t02", "description": "Reference to teacher document ID" },
+      "role": { "type": "string", "example": "teacher" }
+    }
+  },
+  "teachers": {
+    "documentId": "t01",
+    "fields": {
+      "assignedCampuses": {
+        "type": "array",
+        "items": { "type": "reference", "example": "/campuses/c01" },
+        "example": ["/campuses/c01", "/campuses/c02", "/campuses/c03"]
+      },
+      "description": { "type": "string", "example": "Profesor de Informática" },
+      "name": { "type": "string", "example": "Diego A Torres" }
+    }
+  },
+  "teacherLectures": {
+    "documentId": "t01-c01",
+    "fields": {
+      "campus": { "type": "reference", "example": "/campuses/c01" },
+      "teacher": { "type": "reference", "example": "/teachers/t01" },
+      "lectures": {
+        "type": "map",
+        "description": "Map of day names to arrays of lecture objects",
+        "example": {
+          "monday": [
+            {
+              "homeroom": "/homerooms/c01-hrprejardin",
+              "slot": 1,
+              "subject": "/subjects/subject-arte",
+              "time": "07:00 - 08:00"
+            }
+          ],
+          "friday": [
+            {
+              "homeroom": "/homerooms/c01-hr402",
+              "slot": 1,
+              "subject": "/subjects/subject-informatica",
+              "time": "07:00 - 08:00"
+            }
+          ]
+        },
+        "lectureObject": {
+          "homeroom": { "type": ["reference", "null"], "description": "Reference to homeroom or null" },
+          "slot": { "type": "number" },
+          "subject": { "type": ["reference", "null"], "description": "Reference to subject or null" },
+          "time": { "type": "string" }
+        }
+      }
+    }
+  },
+  "subjects": {
+    "documentId": "subject-arte",
+    "fields": {
+      "description": { "type": "string", "example": "Historia del Arte" },
+      "name": { "type": "string", "example": "Arte" }
+    }
+  },
+  "students": {
+    "documentId": "+573006582212",
+    "fields": {
+      "cellphoneContact": { "type": "string", "example": "3006582212" },
+      "name": { "type": "string", "example": "Plazas Perez Evangeline Celeste" },
+      "status": { "type": "string", "example": "activate" }
+    }
+  },
+  "homerooms": {
+    "documentId": "c01-hr1001",
+    "fields": {
+      "campusId": { "type": "reference", "example": "/campuses/c01" },
+      "description": { "type": "string", "example": "Homeroom for grade 10" },
+      "educationalLevelId": { "type": "reference", "example": "/educationalLevels/el02" },
+      "gradeId": { "type": "reference", "example": "/grades/g10" },
+      "name": { "type": "string", "example": "Aula 1001" },
+      "students": {
+        "type": "array",
+        "items": { "type": "reference" },
+        "example": [
+          "/students/3205184390",
+          "/students/3044056092",
+          "/students/3219726969"
+        ]
+      }
+    }
+  },
+  "grades": {
+    "documentId": "g01",
+    "fields": {
+      "description": { "type": "string", "example": "Grado Primero." },
+      "name": { "type": "string", "example": "Primero" }
+    }
+  },
+  "educationalLevels": {
+    "documentId": "el00",
+    "fields": {
+      "description": { "type": "string", "example": "Nivel Preescolar" },
+      "name": { "type": "string", "example": "Preescolar" }
+    }
+  },
+  "campuses": {
+    "documentId": "c01",
+    "fields": {
+      "description": { "type": "string", "example": "Finca El Brasil" },
+      "homerooms": {
+        "type": "array",
+        "items": { "type": "reference" },
+        "example": [
+          "/homerooms/c01-hrprejardin",
+          "/homerooms/c01-hrjardin",
+          "/homerooms/c01-hrtransicion"
+        ]
+      },
+      "name": { "type": "string", "example": "Sede Principal - Kirpalamar" },
+      "zone": { "type": "string", "example": "urban" }
+    }
+  },
+  "attendanceLabels": {
+    "documentIds": ["A", "E", "I", "IJ", "P", "T"],
+    "fields": {
+      "color": { "type": "string", "examples": {
+        "A": "green",
+        "E": "red",
+        "I": "black54",
+        "IJ": "blueGrey",
+        "P": "purple",
+        "T": "orange"
+      }},
+      "description": { "type": "string", "examples": {
+        "A": "Asiste",
+        "E": "Evasión",
+        "I": "Inasistencia",
+        "IJ": "Inasistencia Justificada",
+        "P": "Retiro con acudiente",
+        "T": "Tarde"
+      }}
+    }
+  },
+  "attendances": {
+    "documentId": "01-hrprejardin_subject-matematica-basica_2025-06-10_0700-0800",
+    "fields": {
+      "attendanceRecords": {
+        "type": "map",
+        "description": "Map of student ID to attendance record",
+        "example": {
+          "+573006582212": {
+            "createdAt": "2025-06-10T18:42:15-05:00",
+            "label": "A",
+            "labelColor": "ff4caf50",
+            "labelDescription": "Asiste",
+            "notes": "",
+            "offTheClock": true,
+            "studentName": "Plazas Perez Evangeline Celeste",
+            "updatedAt": "2025-06-10T18:42:41-05:00"
+          }
+        },
+        "recordFields": {
+          "createdAt": { "type": "timestamp" },
+          "label": { "type": "string" },
+          "labelColor": { "type": "string" },
+          "labelDescription": { "type": "string" },
+          "notes": { "type": "string" },
+          "offTheClock": { "type": "boolean" },
+          "studentName": { "type": "string" },
+          "updatedAt": { "type": "timestamp" }
+        }
+      },
+      "campusId": { "type": "string", "example": "c01" },
+      "campusName": { "type": "string", "example": "Sede Principal - Kirpalamar" },
+      "createdAt": { "type": "timestamp", "example": "2025-06-10T15:49:03-05:00" },
+      "date": { "type": "timestamp", "example": "2025-06-10T00:00:00-05:00" },
+      "day": { "type": "string", "example": "tuesday" },
+      "educationalLevelId": { "type": "string", "example": "el00" },
+      "educationalLevelName": { "type": "string", "example": "Preescolar" },
+      "gradeId": { "type": "string", "example": "gprejardin" },
+      "gradeName": { "type": "string", "example": "Primero" },
+      "homeroomId": { "type": "string", "example": "c01-hrprejardin" },
+      "homeroomName": { "type": "string", "example": "Aula prejardin" },
+      "offTheClock": { "type": "boolean", "example": true },
+      "slot": { "type": "string", "example": "1" },
+      "subjectId": { "type": "string", "example": "subject-matematica-basica" },
+      "subjectName": { "type": "string", "example": "Matemáticas para Primaria" },
+      "teacherId": { "type": "string", "example": "t01" },
+      "teacherName": { "type": "string", "example": "Diego Torres" },
+      "time": { "type": "string", "example": "07:00 - 08:00" },
+      "updatedAt": { "type": "timestamp", "example": "2025-06-10T18:42:41-05:00" }
+    }
+  },
+  "licenses": {
+    "documentId": "school_001",
+    "fields": {
+      "active": { "type": "boolean", "example": true },
+      "createdAt": { "type": "timestamp", "example": "2025-06-10T15:13:54-05:00" },
+      "description": {
+        "type": "string",
+        "example": "Licencia anual para el uso de Attendify por el Colegio Kirpalamar. Incluye acceso a todas las funcionalidades para docentes y administradores."
+      },
+      "expiryDate": { "type": "timestamp", "example": "2025-06-30T15:15:25-05:00" },
+      "id": { "type": "string", "example": "school_001" },
+      "name": { "type": "string", "example": "Licencia Colegio Kirpalamar" },
+      "updatedAt": { "type": "timestamp", "example": "2025-06-10T00:00:00-05:00" },
+      "warnDaysBeforeExpiry": { "type": "number", "example": 28 }
+    }
+  }
+}

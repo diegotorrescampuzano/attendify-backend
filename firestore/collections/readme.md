@@ -10,7 +10,7 @@
 
 | Field   | Type   | Example Value               | Description             |
 |---------|--------|----------------------------|-------------------------|
-| email   | string | "marianitatatu11@gmail.com" | User's email address    |
+| email   | string | "marianita@gmail.com" | User's email address    |
 | name    | string | "Mariana Torres"           | User's full name        |
 | refId   | string | "t02"                      | Reference ID (likely to a teacher document ID) |
 | role    | string | "teacher"                  | User role               |
