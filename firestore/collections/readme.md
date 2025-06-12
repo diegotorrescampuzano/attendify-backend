@@ -1,20 +1,28 @@
 # Firestore Schema Documentation
 
+> **Note:** Each Firestore collection consists of documents identified by a **document ID** (not stored as a field inside the document unless explicitly added). The document ID uniquely identifies each document within the collection and is used to reference documents throughout the database.
+
+---
+
 ## users
+
+> **Example Document ID:** `WiI7uR0vMwMQwOxOThXNODWmhFx2`
 
 | Field   | Type   | Example Value               | Description             |
 |---------|--------|----------------------------|-------------------------|
 | email   | string | "marianitatatu11@gmail.com" | User's email address    |
 | name    | string | "Mariana Torres"           | User's full name        |
-| refId   | string | "t02"                      | Reference ID (teacher?) |
+| refId   | string | "t02"                      | Reference ID (likely to a teacher document ID) |
 | role    | string | "teacher"                  | User role               |
 
 **Relationships:**  
-- `refId` may reference a document in the `teachers` collection.
+- `refId` may correspond to a document ID in the `teachers` collection.
 
 ---
 
 ## teachers
+
+> **Example Document ID:** `t01`
 
 | Field            | Type    | Example Value             | Description                              |
 |------------------|---------|---------------------------|------------------------------------------|
@@ -29,19 +37,21 @@
 
 ## teacherLectures
 
+> **Example Document ID:** `t01-c01`
+
 | Field     | Type | Example Value         | Description                                  |
 |-----------|------|----------------------|----------------------------------------------|
-| campus    | ref  | "/campuses/c01"      | Reference to a campus document               |
+| campus    | reference  | "/campuses/c01"      | Reference to a campus document               |
 | lectures  | map  | { monday: [...], ...}| Map of days to arrays of lecture objects     |
-| teacher   | ref  | "/teachers/t01"      | Reference to the teacher document            |
+| teacher   | reference  | "/teachers/t01"      | Reference to the teacher document            |
 
 **Lecture Object (inside lectures[day][i]):**
 
 | Field     | Type     | Example Value                   | Description                        |
 |-----------|----------|---------------------------------|------------------------------------|
-| homeroom  | ref/null | "/homerooms/c01-hr402" or null  | Reference to homeroom or null      |
+| homeroom  | reference/null | "/homerooms/c01-hr402" or null  | Reference to homeroom or null      |
 | slot      | number   | 1                               | Time slot number                   |
-| subject   | ref/null | "/subjects/subject-informatica" | Reference to subject or null       |
+| subject   | reference/null | "/subjects/subject-informatica" | Reference to subject or null       |
 | time      | string   | "07:00 - 08:00"                 | Time range                         |
 
 **Relationships:**  
@@ -53,6 +63,8 @@
 
 ## subjects
 
+> **Example Document ID:** `subject-arte`
+
 | Field       | Type   | Example Value         | Description         |
 |-------------|--------|----------------------|---------------------|
 | description | string | "Historia del Arte"  | Subject description |
@@ -61,6 +73,8 @@
 ---
 
 ## students
+
+> **Example Document ID:** `+573006582212`
 
 | Field           | Type   | Example Value                      | Description                        |
 |-----------------|--------|------------------------------------|------------------------------------|
@@ -72,12 +86,14 @@
 
 ## homerooms
 
+> **Example Document ID:** `c01-hr1001`
+
 | Field              | Type    | Example Value                   | Description                        |
 |--------------------|---------|---------------------------------|------------------------------------|
-| campusId           | ref     | "/campuses/c01"                 | Reference to campus                |
+| campusId           | reference     | "/campuses/c01"                 | Reference to campus                |
 | description        | string  | "Homeroom for grade 10"         | Homeroom description               |
-| educationalLevelId | ref     | "/educationalLevels/el02"       | Reference to educational level     |
-| gradeId            | ref     | "/grades/g10"                   | Reference to grade                 |
+| educationalLevelId | reference     | "/educationalLevels/el02"       | Reference to educational level     |
+| gradeId            | reference     | "/grades/g10"                   | Reference to grade                 |
 | name               | string  | "Aula 1001"                     | Homeroom name                      |
 | students           | array   | ["/students/3205184390", ...]   | References to student documents    |
 
@@ -89,6 +105,8 @@
 
 ## grades
 
+> **Example Document ID:** `g01`
+
 | Field       | Type   | Example Value        | Description         |
 |-------------|--------|---------------------|---------------------|
 | description | string | "Grado Primero."    | Grade description   |
@@ -98,6 +116,8 @@
 
 ## educationalLevels
 
+> **Example Document ID:** `el00`
+
 | Field       | Type   | Example Value      | Description             |
 |-------------|--------|-------------------|-------------------------|
 | description | string | "Nivel Preescolar"| Level description       |
@@ -106,6 +126,8 @@
 ---
 
 ## campuses
+
+> **Example Document ID:** `c01`
 
 | Field      | Type    | Example Value                      | Description                       |
 |------------|---------|------------------------------------|-----------------------------------|
@@ -117,6 +139,8 @@
 ---
 
 ## attendanceLabels
+
+> **Example Document IDs:** `A`, `E`, `I`, `IJ`, `P`, `T`
 
 | Document ID | color     | description                  |
 |-------------|-----------|------------------------------|
@@ -130,6 +154,8 @@
 ---
 
 ## attendances
+
+> **Example Document ID:** `01-hrprejardin_subject-matematica-basica_2025-06-10_0700-0800`
 
 | Field             | Type      | Example Value                              | Description                      |
 |-------------------|-----------|--------------------------------------------|----------------------------------|
@@ -171,13 +197,15 @@
 
 ## licenses
 
+> **Example Document ID:** `school_001`
+
 | Field              | Type      | Example Value         | Description                       |
 |--------------------|-----------|----------------------|-----------------------------------|
 | active             | boolean   | true                 | Is the license active?            |
 | createdAt          | timestamp | 2025-06-10T15:13:54  | Creation timestamp                |
 | description        | string    | "Licencia anual para el uso de Attendify por el Colegio Kirpalamar. Incluye acceso a todas las funcionalidades para docentes y administradores."  | License description               |
 | expiryDate         | timestamp | 2025-06-30T15:15:25  | Expiry date                       |
-| id                 | string    | "school_001"         | License ID                        |
+| id                 | string    | "school_001"         | License ID (matches document ID) |
 | name               | string    | "Licencia Colegio Kirpalamar" | License name              |
 | updatedAt          | timestamp | 2025-06-10T00:00:00  | Last update timestamp             |
 | warnDaysBeforeExpiry| number   | 28                   | Days before expiry to warn        |
